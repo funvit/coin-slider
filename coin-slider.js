@@ -1,8 +1,8 @@
 /**
  * Coin Slider - Unique jQuery Image Slider
  * @version: 1.0.1 - (2013/03/21)
- * @requires jQuery v1.2.2 or later
- * @author Vitaliy Funtikov
+ * @requires: jQuery v1.2.2 or later
+ * @author: Vitaliy Funtikov
  * @based_on: Coin Slider 1.0 by Ivan Lazarevic, http://workshop.rs/projects/coin-slider/
  
  * Licensed under MIT licence:
