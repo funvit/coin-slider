@@ -1,9 +1,9 @@
 /**
  * Coin Slider - Unique jQuery Image Slider
- * @version: 1.0 - (2010/04/04)
+ * @version: 1.0.1 - (2013/03/21)
  * @requires jQuery v1.2.2 or later
- * @author Ivan Lazarevic
- * Examples and documentation at: http://workshop.rs/projects/coin-slider/
+ * @author Vitaliy Funtikov
+ * @based_on: Coin Slider 1.0 by Ivan Lazarevic, http://workshop.rs/projects/coin-slider/
  
  * Licensed under MIT licence:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -122,11 +122,9 @@
 		};
 
 		var transitionCall = function (el) {
-
 			clearInterval(interval[el.id]);
 			var delay = params[el.id].delay + params[el.id].spw * params[el.id].sph * params[el.id].sDelay;
 			interval[el.id] = setInterval(function() { transition(el);  }, delay);
-
 		};
 
 		// transitions
@@ -139,6 +137,7 @@
 			effect(el);
 
 			squarePos[el.id] = 0;
+			
 			appInterval[el.id] = setInterval(function() { appereance(el,order[el.id][squarePos[el.id]]);  },params[el.id].sDelay);
 					
 			$(el).css({ 'background-image': 'url(' + images[el.id][imagePos[el.id]] + ')' });
@@ -225,32 +224,34 @@
 			}).mouseover( function(){ $('#cs-navigation-' + el.id).show(); });
 
 			// image buttons
-			$("<div id='cs-buttons-" + el.id + "' class='cs-buttons'></div>").appendTo($('#coin-slider-' + el.id));
-
-			for (k = 1; k < images[el.id].length + 1; k++){
-				$('#cs-buttons-' + el.id).append("<a href='#' class='cs-button-" + el.id + "' id='cs-button-" + el.id + "-" + k + "'>" + k + "</a>");
-			}
-
-			$.each($('.cs-button-' + el.id), function(i,item){
-				$(item).click( function(e){
-					$('.cs-button-' + el.id).removeClass('cs-active');
-					$(this).addClass('cs-active');
-					e.preventDefault();
-					transition(el,i);
-					transitionCall(el);
+			if (params[el.id].coin_buttons) {
+				$("<div id='cs-buttons-" + el.id + "' class='cs-buttons'></div>").appendTo($('#coin-slider-' + el.id));
+	
+				for (k = 1; k < images[el.id].length + 1; k++){
+					$('#cs-buttons-' + el.id).append("<a href='#' class='cs-button-" + el.id + "' id='cs-button-" + el.id + "-" + k + "'>" + k + "</a>");
+				}
+	
+				$.each($('.cs-button-' + el.id), function(i,item){
+					$(item).click( function(e){
+						$('.cs-button-' + el.id).removeClass('cs-active');
+						$(this).addClass('cs-active');
+						e.preventDefault();
+						transition(el,i);
+						transitionCall(el);
+					});
 				});
-			});
-
-			$('#cs-navigation-' + el.id + ' a').mouseout(function(){
-				$('#cs-navigation-' + el.id).hide();
-				params[el.id].pause = false;
-			});
-
-			$("#cs-buttons-" + el.id).css({
-				'left'			: '50%',
-				'margin-left'	: -images[el.id].length * 15 / 2 - 5,
-				'position'		: 'relative'
-			});
+	
+				$('#cs-navigation-' + el.id + ' a').mouseout(function(){
+					$('#cs-navigation-' + el.id).hide();
+					params[el.id].pause = false;
+				});
+	
+				$("#cs-buttons-" + el.id).css({
+					'left'			: '50%',
+					'margin-left'	: -images[el.id].length * 15 / 2 - 5,
+					'position'		: 'relative'
+				});
+			}
 				
 		};
 
@@ -481,12 +482,16 @@
 
 			setFields(el);
 
-			if(params[el.id].navigation){
+			if(params[el.id].navigation && images[el.id].length > 1){
 				setNavigation(el);
 			}
-
+			
 			transition(el,0);
-			transitionCall(el);
+
+			if (images[el.id].length > 1) {
+				transitionCall(el);
+			}
+
 
 		};
 
@@ -514,7 +519,8 @@
 		links : true, // show images as links
 		hoverPause: true, // pause on hover
 		prevText: 'prev',
-		nextText: 'next'
+		nextText: 'next',
+		coin_buttons: true
 	};
 	
 })(jQuery);
